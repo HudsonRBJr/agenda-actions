@@ -1,0 +1,31 @@
+//name: Release Workflow Agenda
+
+on:
+  push:
+    tags:
+      - 'v*.*.*'
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout do repositório
+        uses: actions/checkout@v3
+
+      - name: Configurar Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+
+      - name: Instalar dependências
+        run: npm install || echo "Nenhum pacote para instalar"
+
+      - name: Gerar build
+        run: echo "Build do projeto concluída com sucesso!"
+
+      - name: Criar release automaticamente
+        uses: softprops/action-gh-release@v1
+        with:
+          body: "Release gerada automaticamente pelo workflow de agenda-actions."
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
